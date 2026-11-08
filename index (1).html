@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นักพิมพ์ตัวจิ๋ว ป.1</title>
+<style>
+:root{--a:#7657db;--b:#ed75ae;--bg:#fff;--panel:#faf8ff;--line:#e7e2f0;--ink:#29334b;--muted:#758096}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#f4f0ff,#fff3f8);font-family:Tahoma,"Noto Sans Thai",sans-serif;color:var(--ink);padding:18px}
+button,input,select{font:inherit}
+.app{max-width:920px;margin:auto;background:var(--bg);border-radius:24px;overflow:hidden;box-shadow:0 12px 40px #26334a20}
+header{padding:26px 18px;text-align:center;color:white;background:linear-gradient(120deg,var(--a),var(--b))}
+header .emoji{font-size:38px}h1{font-size:clamp(25px,5vw,38px);margin:5px 0;font-weight:800}header p{margin:5px 0 0}
+nav{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px 0}
+main{padding:18px}
+button{border:0;border-radius:12px;padding:11px 16px;font-weight:700;cursor:pointer;transition:.15s}
+button:active{transform:scale(.97)}
+.primary{background:linear-gradient(120deg,var(--a),var(--b));color:#fff}
+.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.tab.active{background:var(--a);color:#fff}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:17px;margin-bottom:13px}
+label{display:block;font-weight:700;margin:10px 0 5px}
+input,select{width:100%;padding:12px;border:2px solid var(--line);border-radius:11px;background:white;color:var(--ink);outline:none}
+input:focus,select:focus{border-color:var(--a)}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.actions>*{flex:1}
+.muted{color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:13px;text-align:center;padding:12px 5px}
+.stat strong{display:block;font-size:25px;color:var(--a)}.stat small{font-size:12px;color:var(--muted)}
+.word{font-size:clamp(40px,9vw,64px);font-weight:800;text-align:center;padding:20px;color:var(--a)}
+.timer{text-align:center;font-size:24px;font-weight:800;margin-bottom:8px}
+.track{height:14px;background:var(--line);border-radius:20px;overflow:hidden}.bar{height:100%;width:100%;background:linear-gradient(90deg,#25b77a,#f0bd4c);transition:width .1s}
+.feedback{text-align:center;min-height:40px;font-size:27px}.correct{color:#15975b}.wrong{color:#e34b61;text-decoration:underline}.pending{color:#9aa2b2}
+.notice{background:#fff5d9;border-radius:11px;padding:11px;text-align:center;margin-top:12px}
+.hidden{display:none!important}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line)}th{color:var(--muted)}
+.record{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin:9px 0}
+.record button{margin-top:8px}
+.chart{height:190px;display:flex;align-items:flex-end;gap:8px;overflow-x:auto;border-bottom:2px solid var(--line);padding:12px 4px}
+.chart-item{min-width:38px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;font-size:10px}
+.chart-bar{width:25px;border-radius:7px 7px 0 0;background:linear-gradient(0deg,var(--a),var(--b));min-height:3px}
+.swatches{display:flex;gap:12px;margin-top:10px}.swatch{width:34px;height:34px;padding:0;border-radius:50%;border:3px solid white;outline:1px solid #aaa}
+.swatch.active{outline:3px solid var(--a)}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:0 10px 18px}
+@media(max-width:520px){body{padding:8px}.stats{grid-template-columns:repeat(2,1fr)}main{padding:12px}nav{padding:12px 12px 0}nav button{flex:1;font-size:13px;padding:10px 6px}.panel{padding:13px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="emoji">⌨️ 🌈 🐰</div><h1>นักพิมพ์ตัวจิ๋ว ป.1</h1><p>พิมพ์เก่ง พิมพ์ไว สนุกไปด้วยกัน!</p></header>
+<nav>
+<button class="tab active" data-page="home">🏠 หน้าแรก</button>
+<button class="tab secondary" data-page="history">📚 ประวัติการเล่น</button>
+<button class="tab secondary" data-page="progress">📈 พัฒนาการ</button>
+</nav>
+<main>
+<section id="home">
+<div class="panel">
+<h2 style="text-align:center">🎮 พร้อมเล่นเกมหรือยัง?</h2>
+<p class="muted" style="text-align:center">สุ่มคำศัพท์ 10 คำ คำละ 60 วินาที พิมพ์ให้ถูกต้องและรวดเร็วเพื่อสะสมคะแนน</p>
+<label for="player">ชื่อนักเรียน</label><input id="player" maxlength="30" placeholder="กรอกชื่อผู้เล่น">
+<div class="actions"><button class="primary" id="start">🚀 เริ่มเล่นเกม</button></div>
+</div>
+<div class="panel"><strong>🎨 เลือกธีมสี</strong><div class="swatches">
+<button class="swatch active" data-theme="purple" style="background:linear-gradient(135deg,#7657db,#ed75ae)" aria-label="ม่วงชมพู"></button>
+<button class="swatch" data-theme="blue" style="background:linear-gradient(135deg,#258bd7,#58d6d1)" aria-label="ฟ้า"></button>
+<button class="swatch" data-theme="green" style="background:linear-gradient(135deg,#159b78,#a6d96a)" aria-label="เขียว"></button>
+<button class="swatch" data-theme="orange" style="background:linear-gradient(135deg,#ef873b,#f3c45b)" aria-label="ส้ม"></button>
+<button class="swatch" data-theme="pink" style="background:linear-gradient(135deg,#e34e91,#f59dbb)" aria-label="ชมพู"></button>
+</div></div>
+<div class="panel"><strong>📖 กติกา</strong><p class="muted">พิมพ์ถูก 1 คำ ได้ 50 คะแนน พร้อมโบนัสตามเวลาที่เหลือ (สูงสุด 170 คะแนนต่อคำ) ระบบบันทึกวันที่ คะแนน และเวลาที่ใช้ต่อคำให้อัตโนมัติ</p></div>
+</section>
+<section id="play" class="hidden">
+<div class="stats">
+<div class="stat"><strong id="round">1/10</strong><small>ข้อที่</small></div><div class="stat"><strong id="score">0</strong><small>คะแนน</small></div><div class="stat"><strong id="done">0</strong><small>คำที่เสร็จ</small></div><div class="stat"><strong id="accuracy">100%</strong><small>ความแม่นยำ</small></div>
+</div>
+<div class="panel" style="margin-top:12px"><div class="timer" id="timer">60 วินาที</div><div class="track"><div id="bar" class="bar"></div></div></div>
+<div class="panel"><div class="muted" style="text-align:center">✨ คำศัพท์ที่ต้องพิมพ์</div><div class="word" id="word">ภาษาไทย</div><div class="feedback" id="feedback"><span class="pending">เริ่มพิมพ์ได้เลย!</span></div>
+<label for="typing">⌨️ พิมพ์คำตอบ</label><input id="typing" autocomplete="off" spellcheck="false" placeholder="พิมพ์คำศัพท์ตรงนี้..." style="font-size:23px;text-align:center">
+<div class="notice" id="message">สู้ ๆ นะ เก่งมาก 🌟</div></div>
+<button class="secondary" id="quit" style="width:100%">กลับหน้าหลัก</button>
+</section>
+<section id="result" class="hidden">
+<div class="panel" style="text-align:center"><div style="font-size:48px">🏆🎉</div><h2>เก่งมากเลย!</h2><p id="result-name" class="muted"></p><div class="muted">คะแนนรวม</div><div id="final-score" style="font-size:54px;font-weight:900;color:var(--a)">0</div>
+<div class="stats"><div class="stat"><strong id="final-done">0</strong><small>คำที่เสร็จ</small></div><div class="stat"><strong id="final-accuracy">0%</strong><small>ความแม่นยำ</small></div><div class="stat"><strong id="final-time">0</strong><small>เวลาเฉลี่ย/คำ</small></div><div class="stat"><strong id="final-correct">0</strong><small>คำที่ถูก</small></div></div><p class="muted">บันทึกประวัติการเล่นเรียบร้อยแล้ว</p></div>
+<div class="actions"><button class="primary" id="again">🔄 เล่นอีกครั้ง</button><button class="secondary" id="result-history">📚 ดูประวัติ</button></div>
+</section>
+<section id="history" class="hidden">
+<div class="panel"><h2>📚 ประวัติการเล่น</h2><p class="muted">ค้นหาประวัติจากชื่อนักเรียน</p><input id="search" placeholder="พิมพ์ชื่อที่ต้องการค้นหา"><div id="history-list" style="margin-top:12px"></div><div id="empty-history" class="muted" style="text-align:center;padding:20px">ยังไม่มีประวัติการเล่น</div>
+<div class="actions"><button class="secondary" id="export">📥 ดาวน์โหลด CSV</button><button class="secondary" id="clear">ล้างประวัติทั้งหมด</button></div></div>
+<div class="panel hidden" id="detail"><h3>🔍 รายละเอียดการเล่น</h3><div id="detail-summary" class="muted"></div><div style="overflow-x:auto"><table><thead><tr><th>คำศัพท์</th><th>เวลาที่ใช้</th><th>ผล</th></tr></thead><tbody id="detail-rows"></tbody></table></div></div>
+</section>
+<section id="progress" class="hidden">
+<div class="panel"><h2>📈 พัฒนาการของฉัน</h2><label for="progress-player">เลือกชื่อนักเรียน</label><select id="progress-player"></select>
+<div id="progress-content" class="hidden"><div class="stats" style="margin-top:14px">
+<div class="stat"><strong id="total-games">0</strong><small>จำนวนครั้ง</small></div><div class="stat"><strong id="best">0</strong><small>คะแนนสูงสุด</small></div><div class="stat"><strong id="average">0</strong><small>คะแนนเฉลี่ย</small></div><div class="stat"><strong id="avg-accuracy">0%</strong><small>แม่นยำเฉลี่ย</small></div></div>
+<h3>📊 คะแนนย้อนหลัง</h3><div class="chart" id="chart"></div><p class="muted" style="text-align:center">กราฟแสดงคะแนนตามลำดับการเล่น</p><div class="notice" id="advice"></div></div>
+<div id="no-progress" class="muted" style="padding:20px;text-align:center">ยังไม่มีข้อมูล ลองเล่นเกมก่อนนะ!</div></div>
+</section>
+</main>
+<footer>🌼 ฝึกพิมพ์วันละนิด เก่งขึ้นทุกวัน 🌼 · ประวัติบันทึกในเบราว์เซอร์เครื่องนี้</footer>
+</div>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const KEY='thaiTypingGrade1SingleFileHistoryV1';
+const words=['ภาษาไทย','โรงเรียน','คุณครู','นักเรียน','หนังสือ','ดินสอ','ยางลบ','กระเป๋า','โต๊ะ','เก้าอี้','แมว','สุนัข','กระต่าย','ช้าง','ม้า','ปลา','นก','เป็ด','ไก่','ผีเสื้อ','ดอกไม้','ต้นไม้','ใบไม้','ภูเขา','ทะเล','แม่น้ำ','ท้องฟ้า','สายรุ้ง','ดวงดาว','พระจันทร์','บ้าน','รถยนต์','จักรยาน','รถไฟ','เครื่องบิน','ลูกบอล','ตุ๊กตา','ขนม','นม','น้ำ','กล้วย','มะม่วง','แอปเปิล','ส้ม','แตงโม','พ่อ','แม่','เพื่อน','เด็กดี','ยิ้ม'];
+const themes={purple:['#7657db','#ed75ae'],blue:['#258bd7','#58d6d1'],green:['#159b78','#a6d96a'],orange:['#ef873b','#f3c45b'],pink:['#e34e91','#f59dbb']};
+let queue=[],index=0,score=0,done=0,correct=0,totalChars=0,correctChars=0,remaining=60,timer=null,locked=false,wordStarted=0,details=[],player='',selectedRecord=null;
+const read=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}};
+const save=x=>{try{localStorage.setItem(KEY,JSON.stringify(x));return true}catch(e){alert('บันทึกไม่สำเร็จ พื้นที่จัดเก็บของเบราว์เซอร์อาจเต็ม');return false}};
+const stop=()=>{if(timer){clearInterval(timer);timer=null}};
+const page=name=>{['home','play','result','history','progress'].forEach(p=>$(p).classList.toggle('hidden',p!==name));document.querySelectorAll('.tab').forEach(b=>{b.classList.toggle('active',b.dataset.page===name);b.classList.toggle('secondary',b.dataset.page!==name)})};
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=s=>new Date(s).toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'});
+const setTheme=t=>{const c=themes[t];document.documentElement.style.setProperty('--a',c[0]);document.documentElement.style.setProperty('--b',c[1]);document.querySelectorAll('.swatch').forEach(b=>b.classList.toggle('active',b.dataset.theme===t))};
+document.querySelectorAll('.swatch').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.theme)));
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{stop();if(b.dataset.page==='history')renderHistory();if(b.dataset.page==='progress')renderProgress();page(b.dataset.page)}));
+function update(){ $('round').textContent=Math.min(index+1,10)+'/10';$('score').textContent=score;$('done').textContent=done;$('accuracy').textContent=(totalChars?Math.round(correctChars/totalChars*100):100)+'%';}
+function nextWord(){
+ if(index>=10){endGame();return}
+ locked=false;remaining=60;wordStarted=Date.now();$('round').textContent=(index+1)+'/10';$('word').textContent=queue[index];$('typing').value='';$('typing').disabled=false;$('typing').focus();$('feedback').innerHTML='<span class="pending">เริ่มพิมพ์ได้เลย!</span>';$('message').textContent='สู้ ๆ นะ เก่งมาก 🌟';$('timer').textContent='60 วินาที';$('bar').style.width='100%';stop();
+ timer=setInterval(()=>{remaining=Math.max(0,60-(Date.now()-wordStarted)/1000);$('timer').textContent=Math.ceil(remaining)+' วินาที';$('bar').style.width=(remaining/60*100)+'%';$('bar').style.background=remaining<=15?'#e34b61':'linear-gradient(90deg,#25b77a,#f0bd4c)';if(remaining<=0)finish(false)},100);
+}
+function startGame(){stop();player=$('player').value.trim()||'นักเรียน';queue=shuffle(words).slice(0,10);index=score=done=correct=totalChars=correctChars=0;details=[];locked=false;update();page('play');nextWord()}
+function finish(ok){
+ if(locked)return;locked=true;stop();
+ const target=queue[index],typed=$('typing').value,secs=Number(Math.min(60,(Date.now()-wordStarted)/1000).toFixed(2));
+ const a=Array.from(target),b=Array.from(typed);let matched=0;
+ a.forEach((c,i)=>{if(c===b[i])matched++});
+ totalChars+=a.length;correctChars+=matched;done++;
+ if(ok){correct++;score+=50+Math.round(remaining*2)}
+ details.push({word:target,seconds:secs,correct:ok,typed});
+ $('typing').disabled=true;$('message').textContent=ok?'เยี่ยมมาก! ได้คะแนนเพิ่มแล้ว 🎉':'หมดเวลาแล้ว ไม่เป็นไรนะ ลองคำต่อไปกัน! 💪';update();
+ setTimeout(()=>{index++;nextWord()},700);
+}
+$('typing').addEventListener('input',()=>{
+ if(locked)return;const typed=$('typing').value,target=queue[index],a=Array.from(target),b=Array.from(typed);
+ $('feedback').innerHTML=a.map((c,i)=>'<span class="'+(i<b.length?(c===b[i]?'correct':'wrong'):'pending')+'">'+esc(c)+'</span>').join('');
+ $('message').textContent=typed.length>=target.length?'ตรวจดูตัวอักษรอีกครั้งนะ 😊':'พิมพ์ต่อได้เลย ✨';
+ if(typed===target)finish(true);
+});
+$('typing').addEventListener('compositionend',()=>{if(!locked&&$('typing').value===queue[index])finish(true)});
+function endGame(){
+ stop();$('typing').disabled=true;const avg=details.length?details.reduce((s,d)=>s+d.seconds,0)/details.length:0;const accuracy=totalChars?Math.round(correctChars/totalChars*100):0;
+ const record={id:Date.now()+'-'+Math.random().toString(36).slice(2),name:player,date:new Date().toISOString(),score,done,correct,accuracy,average:Number(avg.toFixed(2)),words:details};
+ const ok=save([...read(),record]);selectedRecord=record.id;
+ $('result-name').textContent=player+(ok?' · บันทึกประวัติแล้ว':' · บันทึกประวัติไม่สำเร็จ');$('final-score').textContent=score;$('final-done').textContent=done+'/10';$('final-accuracy').textContent=accuracy+'%';$('final-time').textContent=avg.toFixed(1);$('final-correct').textContent=correct;page('result');
+}
+function renderHistory(){
+ const q=$('search').value.trim().toLowerCase(),records=read().filter(r=>r.name.toLowerCase().includes(q)).sort((a,b)=>new Date(b.date)-new Date(a.date));
+ const list=$('history-list');list.innerHTML='';$('empty-history').classList.toggle('hidden',records.length>0);
+ records.forEach(r=>{
+  const card=document.createElement('div');card.className='record';
+  const info=document.createElement('div');info.innerHTML='<strong>'+esc(r.name)+'</strong><div class="muted">'+fmt(r.date)+'</div><div style="font-weight:700;margin-top:5px">คะแนน '+r.score+' · '+r.done+'/10 คำ · ความแม่นยำ '+r.accuracy+'%</div>';
+  const btn=document.createElement('button');btn.className='secondary';btn.textContent='ดูเวลาที่ใช้แต่ละคำ';btn.addEventListener('click',()=>showDetail(r.id));card.append(info,btn);list.append(card);
+ });
+ if(selectedRecord&&records.some(r=>r.id===selectedRecord))showDetail(selectedRecord);else $('detail').classList.add('hidden');
+}
+function showDetail(id){
+ const r=read().find(x=>x.id===id);if(!r)return;selectedRecord=id;$('detail').classList.remove('hidden');
+ $('detail-summary').textContent=r.name+' | '+fmt(r.date)+' | คะแนน '+r.score+' | ความแม่นยำ '+r.accuracy+'%';
+ $('detail-rows').innerHTML='';r.words.forEach(w=>{const tr=document.createElement('tr');[w.word,w.seconds.toFixed(2)+' วินาที',w.correct?'ถูกต้อง ✓':'หมดเวลา ✗'].forEach((v,i)=>{const td=document.createElement('td');td.textContent=v;if(i===2)td.style.color=w.correct?'#15975b':'#e34b61';tr.append(td)});$('detail-rows').append(tr)});
+}
+function renderProgress(){
+ const all=read(),names=[...new Set(all.map(r=>r.name))],sel=$('progress-player'),old=sel.value;sel.innerHTML='';
+ names.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.append(o)});
+ if(names.includes(old))sel.value=old;
+ updateProgress();
+}
+function updateProgress(){
+ const rs=read().filter(r=>r.name===$('progress-player').value).sort((a,b)=>new Date(a.date)-new Date(b.date));
+ $('progress-content').classList.toggle('hidden',!rs.length);$('no-progress').classList.toggle('hidden',!!rs.length);if(!rs.length)return;
+ const avg=rs.reduce((s,r)=>s+r.score,0)/rs.length,acc=rs.reduce((s,r)=>s+r.accuracy,0)/rs.length;
+ $('total-games').textContent=rs.length;$('best').textContent=Math.max(...rs.map(r=>r.score));$('average').textContent=Math.round(avg);$('avg-accuracy').textContent=Math.round(acc)+'%';
+ const chart=$('chart');chart.innerHTML='';rs.slice(-12).forEach((r,i)=>{const item=document.createElement('div');item.className='chart-item';const val=document.createElement('small');val.textContent=r.score;const bar=document.createElement('div');bar.className='chart-bar';bar.style.height=Math.max(3,r.score/1700*100)+'%';const label=document.createElement('small');label.textContent='ครั้ง '+(Math.max(0,rs.length-12)+i+1);item.append(val,bar,label);chart.append(item)});
+ const diff=rs[rs.length-1].score-rs[0].score;$('advice').textContent=rs.length<2?'เล่นอีกครั้งเพื่อเริ่มเปรียบเทียบพัฒนาการ':diff>0?'ยอดเยี่ยม! คะแนนครั้งล่าสุดเพิ่มขึ้น '+diff+' คะแนนจากครั้งแรก 🌟':diff<0?'ลองฝึกคำศัพท์เพิ่มเติม แล้วกลับมาเล่นใหม่อีกครั้งนะ 💪':'รักษาความสม่ำเสมอไว้ คะแนนยังคงเท่าเดิม!';
+}
+$('progress-player').addEventListener('change',updateProgress);
+$('start').addEventListener('click',startGame);$('again').addEventListener('click',startGame);
+$('quit').addEventListener('click',()=>{stop();page('home')});
+$('result-history').addEventListener('click',()=>{renderHistory();page('history')});
+$('search').addEventListener('input',renderHistory);
+$('clear').addEventListener('click',()=>{if(confirm('ต้องการลบประวัติทั้งหมดในเบราว์เซอร์นี้หรือไม่?')){if(save([])){selectedRecord=null;renderHistory()}}});
+$('export').addEventListener('click',()=>{
+ const rows=[['ชื่อผู้เล่น','วันที่เล่น','คะแนน','คำที่เสร็จ','คำที่ถูก','ความแม่นยำ','คำศัพท์','เวลาต่อคำ (วินาที)','ผล']];
+ read().forEach(r=>r.words.forEach(w=>rows.push([r.name,fmt(r.date),r.score,r.done,r.correct,r.accuracy+'%',w.word,w.seconds,w.correct?'ถูก':'หมดเวลา'])));
+ const csv='\uFEFF'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ประวัติพัฒนาการนักพิมพ์ตัวจิ๋ว.csv';a.click();URL.revokeObjectURL(url);
+});
+setTheme('purple');
+})();
+</script>
+</body>
+</html>
